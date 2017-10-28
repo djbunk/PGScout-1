@@ -64,7 +64,7 @@ class Scout(POGOAccount):
             if (any(poke[0] == job.pokemon_id for poke in blacklist)):
                 odds = int(blacklist[[x[0] for x in blacklist].index(job.pokemon_id)][1])
                 if (randint(1, 100) <= odds):
-                    job.result = self.scout_info("Ignoring Pokemon: {} with odds of {}".format(job.pokemon_name, odds))
+                    job.result = self.log_info("Ignoring Pokemon: {} with odds of {}".format(job.pokemon_name, odds))
                     continue
 
             try:
