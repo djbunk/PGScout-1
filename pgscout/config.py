@@ -22,10 +22,13 @@ def cfg_get(key, default=None):
     global args
     return getattr(args, key)
 
-
 def cfg_set(key, value):
     global args
     setattr(args, key, value)
+
+def blacklist_get():
+    global blacklist
+    return blacklist
 
 
 def parse_args():
@@ -150,6 +153,7 @@ def read_pokemon_ids_from_file(f):
 
 
 def cfg_init():
+    global blacklist
     log.info("Loading PGScout configuration...")
 
     parse_args()
@@ -180,6 +184,7 @@ def cfg_init():
         log.info("Loading blacklist file {}".format(args.blacklist_file))
         with open(args.blacklist_file) as f:
             blacklist = [tuple(map(int, l.split())) for l in f]
+        log.info('Ignoring these pokemon %s', blacklist)
 
     args.low_prio_pokemon = []
     if args.low_prio_file:

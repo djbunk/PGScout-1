@@ -9,7 +9,7 @@ from mrmime.utils import jitter_location
 from pgoapi.exceptions import AuthException, BannedAccountException
 from pgoapi.protos.pogoprotos.networking.responses.encounter_response_pb2 import *
 
-from pgscout.config import cfg_get, blacklist
+from pgscout.config import cfg_get, blacklist_get
 from pgscout.moveset_grades import get_moveset_grades
 from pgscout.stats import inc_for_pokemon
 from pgscout.utils import calc_pokemon_level, calc_iv, distance, PRIO_NAMES
@@ -56,14 +56,16 @@ class Scout(POGOAccount):
         self.errors = 0
 
     def run(self):
+        blacklist = blacklist_get()
         self.log_info("Waiting for job...")
         while True:
             (prio, t, job) = self.job_queue.get()
 
             #% chance of ignoring a pokemon, specified per individual pokemon in file
-            if (job.pokemon_id in blacklist):
-                if randint(1, 100) <= blacklist[[x[0] for x in blacklist].index(job.pokemon_id)][1]:
-                    job.result = self.scout_error("Ignoring Pokemon: {} with odds of {}").format(job.pokemon_name, args.blacklist[[x[0] for x in args.maybelist].index(pokemon_id)][1])
+            if (any(poke[0] == job.pokemon_id for poke in blacklist)):
+                odds = int(blacklist[[x[0] for x in blacklist].index(job.pokemon_id)][1])
+                if (randint(1, 100) <= odds):
+                    job.result = self.scout_info("Ignoring Pokemon: {} with odds of {}".format(job.pokemon_name, odds))
                     continue
 
             try:
