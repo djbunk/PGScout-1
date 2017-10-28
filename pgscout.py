@@ -12,10 +12,11 @@ from flask import Flask, request, jsonify, url_for
 from pgscout.ScoutGuard import ScoutGuard
 from pgscout.ScoutJob import ScoutJob
 from pgscout.cache import get_cached_encounter, cache_encounter, cleanup_cache, get_cached_count
-from pgscout.config import cfg_get, cfg_init, get_pokemon_name
+from pgscout.config import cfg_get, cfg_init, get_pokemon_name, blacklist_get
 from pgscout.console import print_status, hr_tstamp
 from pgscout.utils import normalize_encounter_id, \
     load_pgpool_accounts, app_state, rss_mem_size, get_pokemon_prio, PRIO_HIGH, PRIO_LOW, PRIO_NAMES
+from random import randint
 
 logging.basicConfig(level=logging.INFO,
     format='%(asctime)s [%(threadName)16s][%(module)14s][%(levelname)8s] %(message)s')
@@ -51,6 +52,7 @@ def reject(reason):
 
 @app.route("/iv", methods=['GET'])
 def get_iv():
+    blacklist = blacklist_get()
     if not app_state.accept_new_requests:
         return reject('Not accepting new requests.')
     if not have_active_scouts():
@@ -66,6 +68,16 @@ def get_iv():
     if max_queued_jobs and num_jobs >= max_queued_jobs and prio == PRIO_LOW:
         return reject(
             "Job queue full ({} items). Rejecting encounter with priority '{}'.".format(num_jobs, PRIO_NAMES[prio]))
+
+    if (any(poke[0] == int(pokemon_id) for poke in blacklist)):
+        odds = int(blacklist[[x[0] for x in blacklist].index(int(pokemon_id))][1])
+        if (randint (1,100) <= odds):
+            errorstr = "Ignoring {} (ignore rate {})".format(pokemon_name, odds)
+            log.info(errorstr)
+            return jsonify({
+                'success': False,
+                'error': errorstr
+            })
 
     lat = request.args["latitude"]
     lng = request.args["longitude"]
