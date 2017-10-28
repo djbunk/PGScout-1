@@ -12,10 +12,11 @@ from flask import Flask, request, jsonify, url_for
 from pgscout.ScoutGuard import ScoutGuard
 from pgscout.ScoutJob import ScoutJob
 from pgscout.cache import get_cached_encounter, cache_encounter, cleanup_cache, get_cached_count
-from pgscout.config import cfg_get, cfg_init
+from pgscout.config import cfg_get, cfg_init, blacklist_get
 from pgscout.console import print_status, hr_tstamp
 from pgscout.utils import get_pokemon_name, normalize_encounter_id, \
     load_pgpool_accounts, app_state, rss_mem_size
+from random import randint
 
 logging.basicConfig(level=logging.INFO,
     format='%(asctime)s [%(threadName)16s][%(module)14s][%(levelname)8s] %(message)s')
@@ -43,7 +44,11 @@ def have_active_scouts():
 
 @app.route("/iv", methods=['GET'])
 def get_iv():
+<<<<<<< cd651ef7c1da141a334a3ac30a3378780f756be3
     error = None
+=======
+    blacklist = blacklist_get()
+>>>>>>> Move blacklist check to before it gets into queue
     if not app_state.accept_new_requests:
         error = 'Not accepting new requests.'
     if not have_active_scouts():
@@ -62,6 +67,16 @@ def get_iv():
 
     pokemon_id = request.args["pokemon_id"]
     pokemon_name = get_pokemon_name(pokemon_id)
+
+    if (any(poke[0] == int(pokemon_id) for poke in blacklist)):
+        odds = int(blacklist[[x[0] for x in blacklist].index(int(pokemon_id))][1])
+        if (randint (1,100) <= odds):
+            errorstr = "Ignoring {} (ignore rate {})".format(pokemon_name, odds)
+            log.info(errorstr)
+            return jsonify({
+                'success': False,
+                'error': errorstr
+            })
     lat = request.args["latitude"]
     lng = request.args["longitude"]
     weather = request.args.get("weather", "unknown")
