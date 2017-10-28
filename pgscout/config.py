@@ -15,6 +15,7 @@ from pgscout.proxy import check_proxies
 log = logging.getLogger(__name__)
 
 args = None
+blacklist = []
 
 
 def cfg_get(key, default=None):
@@ -175,7 +176,6 @@ def cfg_init():
         args.proxy_provider.add_resource(proxy)
         
     # Create blacklist-file
-    blacklist = []
     if args.blacklist_file:
         log.info("Loading blacklist file {}".format(args.blacklist_file))
         with open(args.blacklist_file) as f:
