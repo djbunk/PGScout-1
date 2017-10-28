@@ -175,10 +175,11 @@ def cfg_init():
         args.proxy_provider.add_resource(proxy)
         
     # Create blacklist-file
-    args.blacklist = []
+    blacklist = []
     if args.blacklist_file:
+        log.info("Loading blacklist file {}".format(args.blacklist_file))
         with open(args.blacklist_file) as f:
-            args.blacklistlist = [tuple(map(int, l.split())) for l in f]
+            blacklist = [tuple(map(int, l.split())) for l in f]
 
     args.low_prio_pokemon = []
     if args.low_prio_file:
