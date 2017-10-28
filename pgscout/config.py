@@ -42,6 +42,11 @@ def parse_args():
     parser.add_argument('-pf', '--proxies-file',
                         help='Load proxy list from text file (one proxy per line).')
 
+    parser.add_argument('-bl', '--blacklist-file',
+                        help='List of pokemon IDs to ignore along with the ' +
+                        'percentage of the time they should be ignored, ' +
+                        'which is specified as integer from 0-100 in 2nd column')
+
     parser.add_argument('-l', '--level', type=int, default=30,
                         help='Minimum trainer level required. Lower levels will yield an error.')
 
@@ -116,6 +121,12 @@ def cfg_init():
     args.proxy_provider = CyclicResourceProvider()
     for proxy in args.proxies:
         args.proxy_provider.add_resource(proxy)
+        
+    # Create blacklist-file
+    args.blacklist = []
+    if args.blacklist_file:
+        with open(args.blacklist_file) as f:
+            args.blacklistlist = [tuple(map(int, l.split())) for l in f]
 
 
 def use_pgpool():
