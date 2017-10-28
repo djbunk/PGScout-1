@@ -19,6 +19,11 @@ def cfg_get(key, default=None):
     return getattr(args, key)
 
 
+def blacklist_get():
+    global blacklist
+    return blacklist
+
+
 def parse_args():
     global args
     defaultconfigfiles = []
@@ -91,6 +96,7 @@ def init_resoures_from_file(resource_file):
 
 
 def cfg_init():
+    global blacklist
     log.info("Loading PGScout configuration...")
 
     parse_args()
@@ -121,6 +127,7 @@ def cfg_init():
         log.info("Loading blacklist file {}".format(args.blacklist_file))
         with open(args.blacklist_file) as f:
             blacklist = [tuple(map(int, l.split())) for l in f]
+        log.info('Ignoring these pokemon %s', blacklist)
 
 
 def use_pgpool():
