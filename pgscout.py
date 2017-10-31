@@ -1,4 +1,5 @@
 import codecs
+import codecs
 import logging
 import signal
 import sys
@@ -32,7 +33,7 @@ app = Flask(__name__)
 scouts = []
 jobs = PriorityQueue()
 
-# ===========================================================================
+# ------------------------------------------------------------------------------
 
 
 def have_active_scouts():
@@ -226,7 +227,7 @@ def signal_handler(signal, frame):
         print "Exiting"
         sys.exit(0)
 
-# ===========================================================================
+# ------------------------------------------------------------------------------
 
 log.info("PGScout starting up.")
 
