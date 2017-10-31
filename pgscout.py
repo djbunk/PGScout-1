@@ -69,15 +69,17 @@ def get_iv():
         return reject(
             "Job queue full ({} items). Rejecting encounter with priority '{}'.".format(num_jobs, PRIO_NAMES[prio]))
 
-    if (any(poke[0] == int(pokemon_id) for poke in blacklist)):
-        odds = int(blacklist[[x[0] for x in blacklist].index(int(pokemon_id))][1])
-        if (randint (1,100) <= odds):
-            errorstr = "Ignoring {} (ignore rate {})".format(pokemon_name, odds)
-            log.info(errorstr)
-            return jsonify({
-                'success': False,
-                'error': errorstr
-            })
+    force = request.args.get["force", 0]
+    if (int(force) != 1):
+        if (any(poke[0] == int(pokemon_id) for poke in blacklist)):
+            odds = int(blacklist[[x[0] for x in blacklist].index(int(pokemon_id))][1])
+            if (randint (1,100) <= odds):
+                errorstr = "Ignoring {} (ignore rate {})".format(pokemon_name, odds)
+                log.info(errorstr)
+                return jsonify({
+                    'success': False,
+                    'error': errorstr
+                })
 
     lat = request.args["latitude"]
     lng = request.args["longitude"]
