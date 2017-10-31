@@ -45,15 +45,17 @@ def get_iv():
     pokemon_id = request.args["pokemon_id"]
     pokemon_name = get_pokemon_name(pokemon_id)
 
-    if (any(poke[0] == int(pokemon_id) for poke in blacklist)):
-        odds = int(blacklist[[x[0] for x in blacklist].index(int(pokemon_id))][1])
-        if (randint (1,100) <= odds):
-            errorstr = "Ignoring {} (ignore rate {})".format(pokemon_name, odds)
-            log.info(errorstr)
-            return jsonify({
-                'success': False,
-                'error': errorstr
-            })
+    force = request.args.get["force", 0]
+    if (force == 0):
+        if (any(poke[0] == int(pokemon_id) for poke in blacklist)):
+            odds = int(blacklist[[x[0] for x in blacklist].index(int(pokemon_id))][1])
+            if (randint (1,100) <= odds):
+                errorstr = "Ignoring {} (ignore rate {})".format(pokemon_name, odds)
+                log.info(errorstr)
+                return jsonify({
+                    'success': False,
+                    'error': errorstr
+                })
     lat = request.args["latitude"]
     lng = request.args["longitude"]
 
@@ -70,7 +72,7 @@ def get_iv():
         return jsonify(result)
 
     # Create a ScoutJob
-    job = ScoutJob(pokemon_id, encounter_id, spawn_point_id, lat, lng)
+    job = ScoutJob(pokemon_id, encounter_id, spawn_point_id, lat, lng, force)
 
     # Enqueue and wait for job to be processed
     jobs.put(job)
