@@ -75,6 +75,7 @@ def print_status(scouts, initial_display, jobs):
         lines.append(
             "Accepting requests: {} | Job queue length: {} | Cached encounters: {} | Mem Usage: {}".format(
                 app_state.accept_new_requests, jobs.qsize(), get_cached_count(), rss_mem_size()))
+        lines.append("")
 
         if state['display'] == 'scouts':
             total_pages = print_scouts(lines, state, scouts)
@@ -82,6 +83,7 @@ def print_status(scouts, initial_display, jobs):
             total_pages = print_pokemon(lines, state)
 
         # Footer
+        lines.append("")
         lines.append('Page {}/{}. Page number to switch pages. <enter> to '
                      'toggle log view. "p" for Pokemon stats.'
                      ' "t" to toggle accepting new requests.'.format(
