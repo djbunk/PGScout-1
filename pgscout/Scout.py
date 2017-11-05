@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 
 
 # Collect this many samples to determine an encounters/hour value.
-NUM_PAUSE_SAMPLES = 3
+NUM_PAUSE_SAMPLES = 10
 
 ENCOUNTER_RESULTS = {
     0: "ENCOUNTER_ERROR",
