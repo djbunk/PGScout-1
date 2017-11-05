@@ -120,14 +120,14 @@ def print_scouts(lines, state, scouts):
                               map(lambda s: len(s.acc.username), scouts)))
     len_num = str(len(str(len(scouts))))
     if cfg_get('proxies'):
-        line_tmpl = u'{:' + len_num + '} | {:' + len_username + '} | {:25} | {:8} | {:4} | {:6} | {:10} | {:6} | {:6} |{:14} | {}'
+        line_tmpl = u'{:' + len_num + '} | {:' + len_username + '} | {:25} | {:8} | {:4} | {:6} | {:10} | {:5} | {:6} |{:8} | {}'
         lines.append(
             line_tmpl.format('#', 'Scout', 'Proxy', 'Start', 'Warn', 'Active', 'Encounters', 'Enc/h', 'Errors',
-                             'Last Encounter', 'Message'))
+                             'Last Enc', 'Message'))
     else:
-        line_tmpl = u'{:' + len_num + '} | {:' + len_username + '} | {:8} | {:4} | {:6} | {:10} | {:6} | {:6} | {:14} | {}'
+        line_tmpl = u'{:' + len_num + '} | {:' + len_username + '} | {:8} | {:4} | {:6} | {:10} | {:5} | {:6} | {:8} | {}'
         lines.append(line_tmpl.format('#', 'Scout', 'Start', 'Warn', 'Active', 'Encounters', 'Enc/h', 'Errors',
-                                      'Last Encounter', 'Message'))
+                                      'Last Enc', 'Message'))
     return print_lines(lines, scout_line, scouts, 4, state)
 
 
