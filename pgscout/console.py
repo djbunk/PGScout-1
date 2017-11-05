@@ -102,7 +102,7 @@ def print_scouts(lines, state, scouts):
             return line_tmpl.format(current_line, scout.username, scout.proxy_url,
                                     hr_tstamp(scout.start_time), warn_str, active,
                                     scout.total_encounters,
-                                    "{:5.1f}".format(scout.encounters_per_hour),
+                                    "{:5}".format(scout.encounters_per_hour),
                                     scout.errors,
                                     hr_tstamp(scout.previous_encounter),
                                     scout.last_msg)
@@ -111,7 +111,7 @@ def print_scouts(lines, state, scouts):
                                     scout.username,
                                     hr_tstamp(scout.start_time), warn_str, active,
                                     scout.total_encounters,
-                                    "{:5.1f}".format(scout.encounters_per_hour),
+                                    "{:5}".format(scout.encounters_per_hour),
                                     scout.errors,
                                     hr_tstamp(scout.previous_encounter),
                                     scout.last_msg)
