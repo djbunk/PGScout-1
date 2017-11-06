@@ -66,10 +66,15 @@ def get_iv():
     pokemon_id = request.args["pokemon_id"]
     pokemon_name = get_pokemon_name(pokemon_id)
 
-    force = request.args.get["force", 0]
+    force = request.args.get("force", 0)
+    log.info(u"Received request: {}/{} with force of {}".format(pokemon_id, pokemon_name, force))
+#    log.info('Ignoring these pokemon %s', blacklist)
     if (int(force) != 1):
+        log.info(u"Here1")
         if (any(poke[0] == int(pokemon_id) for poke in blacklist)):
+            log.info(u"Here2")
             odds = int(blacklist[[x[0] for x in blacklist].index(int(pokemon_id))][1])
+            log.info(u"Odds for {}/{} are {}".format(pokemon_id, pokemon_name, odds))
             if (randint (1,100) <= odds):
                 errorstr = "Ignoring {} (ignore rate {})".format(pokemon_name, odds)
                 log.info(errorstr)
