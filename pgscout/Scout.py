@@ -50,6 +50,7 @@ class Scout(POGOAccount):
         # Collects the last few pauses between encounters to measure a "encounters per hour" value
         self.past_pauses = deque()
         self.encounters_per_hour = float(0)
+        self.encounters_per_hour_total = float(0)
 
         # Number of errors that may be the cause of a shadowban
         self.errors = 0
@@ -118,7 +119,8 @@ class Scout(POGOAccount):
             avg_pause = reduce(lambda x, y: x + y, self.past_pauses) / len(
                 self.past_pauses)
             self.encounters_per_hour = 3600 / avg_pause
-
+            self.encounters_per_hour_total = self.total_encounters / ((time.time()-self.start_time).total_seconds() / 3600)
+     
         self.total_encounters += 1
         self.previous_encounter = time.time()
 
