@@ -102,7 +102,8 @@ def print_scouts(lines, state, scouts):
             return line_tmpl.format(current_line, scout.username, scout.proxy_url,
                                     hr_tstamp(scout.start_time), warn_str, active,
                                     scout.total_encounters,
-                                    "{:5.1f}".format(scout.encounters_per_hour),
+                                    "{:5.0f}".format(scout.encounters_per_hour_total),
+                                    "  {:5.0f}".format(scout.encounters_per_hour),
                                     scout.errors,
                                     hr_tstamp(scout.previous_encounter),
                                     scout.last_msg)
@@ -111,7 +112,8 @@ def print_scouts(lines, state, scouts):
                                     scout.username,
                                     hr_tstamp(scout.start_time), warn_str, active,
                                     scout.total_encounters,
-                                    "{:5.1f}".format(scout.encounters_per_hour),
+                                    "{:5.0f}".format(scout.encounters_per_hour_total),
+                                    "  {:5.0f}".format(scout.encounters_per_hour),
                                     scout.errors,
                                     hr_tstamp(scout.previous_encounter),
                                     scout.last_msg)
@@ -120,14 +122,15 @@ def print_scouts(lines, state, scouts):
                               map(lambda s: len(s.acc.username), scouts)))
     len_num = str(len(str(len(scouts))))
     if cfg_get('proxies'):
-        line_tmpl = u'{:' + len_num + '} | {:' + len_username + '} | {:25} | {:8} | {:4} | {:6} | {:10} | {:6} | {:6} |{:14} | {}'
-        lines.append(
-            line_tmpl.format('#', 'Scout', 'Proxy', 'Start', 'Warn', 'Active', 'Encounters', 'Enc/h', 'Errors',
-                             'Last Encounter', 'Message'))
+        line_tmpl = u'{:' + len_num + '} | {:' + len_username + '} | {:25} | {:8} | {:4} | {:6} | {:8} | {:5} | {:7} | {:3} | {:8} | {}'
+        lines.append(line_tmpl.format(' ', '     ', '     ', '     ', '    ', '      ', '        ', 'Enc/h', ' Enc/h ', '   ', '        ', '       '))
+        lines.append(line_tmpl.format('#', 'Scout', 'Proxy', 'Start', 'Warn', 'Active', 'Encounts', 'Total', 'Instant', 'Err', 'Last Enc', 'Message'))
+        lines.append('--------------------------------------------------------------------------------------------------------------------------')
     else:
-        line_tmpl = u'{:' + len_num + '} | {:' + len_username + '} | {:8} | {:4} | {:6} | {:10} | {:6} | {:6} | {:14} | {}'
-        lines.append(line_tmpl.format('#', 'Scout', 'Start', 'Warn', 'Active', 'Encounters', 'Enc/h', 'Errors',
-                                      'Last Encounter', 'Message'))
+        line_tmpl = u'{:' + len_num + '} | {:' + len_username + '} | {:8} | {:4} | {:6} | {:8} | {:5} | {:7} | {:3} | {:8} | {}'
+        lines.append(line_tmpl.format(' ', '     ', '     ', '    ', '      ', '        ', 'Enc/h', ' Enc/h ', '   ', '        ', '       '))
+        lines.append(line_tmpl.format('#', 'Scout', 'Start', 'Warn', 'Active', 'Encounts', 'Total', 'Instant', 'Err', 'Last Enc', 'Message'))
+        lines.append('--------------------------------------------------------------------------------------------------------------------------')
     return print_lines(lines, scout_line, scouts, 4, state)
 
 
