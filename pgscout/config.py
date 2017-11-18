@@ -125,8 +125,11 @@ def cfg_init():
     # Create blacklist-file
     if args.blacklist_file:
         log.info("Loading blacklist file {}".format(args.blacklist_file))
-        with open(args.blacklist_file) as f:
-            blacklist = [tuple(map(int, l.split())) for l in f]
+        for line in open(args.blacklist_file):
+            info = tuple(map(int, line.split(",")))
+            if (len(info) < 2):
+                info  = info + (100,)
+            blacklist.append(info)
         log.info('Ignoring these pokemon %s', blacklist)
 
 
