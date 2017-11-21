@@ -75,7 +75,7 @@ def get_iv():
                 log.info(errorstr)
                 return jsonify({
                     'success': False,
-                    'error': errorstr.decode('unicode_escape').encode('ascii','ignore')
+                    'error': errorstr.encode('ascii','ignore')
                 })
     lat = request.args["latitude"]
     lng = request.args["longitude"]
