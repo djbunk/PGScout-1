@@ -75,11 +75,11 @@ def get_iv():
         if (any(poke[0] == int(pokemon_id) for poke in blacklist)):
             odds = int(blacklist[[x[0] for x in blacklist].index(int(pokemon_id))][1])
             if (randint (1,100) <= odds):
-                errorstr = "Ignoring {} (ignore rate {})".format(pokemon_name, odds)
+                errorstr = u"Ignoring {} (ignore rate {})".format(pokemon_name, odds)
                 log.info(errorstr)
                 return jsonify({
                     'success': False,
-                    'error': errorstr
+                    'error': errorstr.decode('unicode_escape').encode('ascii','ignore')
                 })
 
     lat = request.args["latitude"]
