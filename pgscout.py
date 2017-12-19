@@ -200,7 +200,8 @@ def load_accounts(jobs):
             for line in f:
                 fields = line.split(",")
                 fields = map(unicode.strip, fields)
-                accounts.append(ScoutGuard(fields[0], fields[1], fields[2], jobs))
+                for x in range(0,cfg_get('pgpool-acct-multipler'))
+                    accounts.append(ScoutGuard(fields[0], fields[1], fields[2], jobs))
     elif cfg_get('pgpool_url') and cfg_get('pgpool_system_id') and cfg_get('pgpool_num_accounts') > 0:
 
         acc_json = load_pgpool_accounts(cfg_get('pgpool_num_accounts'), reuse=True)
@@ -210,7 +211,11 @@ def load_accounts(jobs):
         if len(acc_json) > 0:
             log.info("Loaded {} accounts from PGPool.".format(len(acc_json)))
             for acc in acc_json:
-                accounts.append(ScoutGuard(acc['auth_service'], acc['username'], acc['password'], jobs))
+                for x in range(0,cfg_get('pgpool-acct-multipler'))
+                    accounts.append(ScoutGuard(acc['auth_service'], acc['username'], acc['password'], jobs))
+
+    print accounts
+    sys.exit(0)
 
     if len(accounts) == 0:
         log.error("Could not load any accounts. Nothing to do. Exiting.")

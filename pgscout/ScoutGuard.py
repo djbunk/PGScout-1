@@ -3,7 +3,7 @@ import sys
 import time
 
 from pgscout.Scout import Scout
-from pgscout.config import use_pgpool
+from pgscout.config import use_pgpool, cfg_get
 from pgscout.utils import load_pgpool_accounts
 
 log = logging.getLogger(__name__)
@@ -22,7 +22,8 @@ class ScoutGuard(object):
             'password': password
         }
         if not username and use_pgpool():
-            initial_account = load_pgpool_accounts(1, reuse=True)
+            for x in range(0,cfg_get('pgpool-acct-multipler'))
+                initial_account = load_pgpool_accounts(1, reuse=True)
         self.acc = self.init_scout(initial_account)
         self.active = True
 
