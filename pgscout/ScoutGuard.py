@@ -22,7 +22,7 @@ class ScoutGuard(object):
             'password': password
         }
         if not username and use_pgpool():
-            for x in range(0,cfg_get('pgpool-acct-multipler')):
+            for x in range(0,cfg_get('pgpool-acct-multiplier')):
                 initial_account = load_pgpool_accounts(1, reuse=True)
         self.acc = self.init_scout(initial_account)
         self.active = True
