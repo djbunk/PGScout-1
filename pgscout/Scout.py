@@ -16,7 +16,7 @@ from pgscout.utils import calc_pokemon_level, calc_iv, distance
 from random import randint
 
 log = logging.getLogger(__name__)
-
+scouts=[]
 
 # Collect this many samples to determine an encounters/hour value.
 NUM_PAUSE_SAMPLES = 10
@@ -32,7 +32,6 @@ ENCOUNTER_RESULTS = {
     7: "POKEMON_INVENTORY_FULL",
     8: "ENCOUNTER_BLOCKED_BY_ANTICHEAT"
 }
-
 
 class Scout(POGOAccount):
     def __init__(self, auth, username, password, job_queue):
