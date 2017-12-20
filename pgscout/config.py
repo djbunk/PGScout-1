@@ -54,6 +54,9 @@ def parse_args():
     parser.add_argument('-l', '--level', type=int, default=30,
                         help='Minimum trainer level required. Lower levels will yield an error.')
 
+    parser.add_argument('-pgpmult', '--pgpool-acct-multiplier', type=int, default=1,
+                        help='Use each account fetched from PGPOOL this number of times')
+
     parser.add_argument('-mqj', '--max-queued-jobs', type=int, default=0,
                         help='Maximum number of queued scout jobs before rejecting new jobs. 0 (default) means no restriction.')
 
