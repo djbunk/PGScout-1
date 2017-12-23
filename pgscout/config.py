@@ -154,7 +154,12 @@ def cfg_init():
     # MrMime config
     mrmime_cfg = {
         'pgpool_system_id': args.pgpool_system_id,
-        'exception_on_captcha': True
+        'exception_on_captcha': True,
+        'parallel_logins': False,
+        'request_retry_delay': 1,
+        'download_assets_and_items': False,
+        'full_login_flow': False,
+        'scan_delay' : 5
     }
     if args.pgpool_url:
         mrmime_cfg['pgpool_url'] = args.pgpool_url
