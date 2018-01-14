@@ -46,7 +46,6 @@ class ScoutGuard(object):
             self.active = True
             self.acc.run()
             self.active = False
-            self.acc.release(reason=self.acc.last_msg)
 
             # if duplicate wait for master account to reconfigure this account to new login info
             if self.acc.duplicate == 1:
